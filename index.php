@@ -2,35 +2,35 @@
 require_once 'helpers.php';
 $is_auth = rand(0, 1);
 $posts = [
-    0 => [
+    [
         'heading' => 'Цитата',
         'type' => 'post-quote',
         'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
         'name' => 'Лариса',
         'avatar' => 'userpic-larisa-small.jpg'
     ],
-    1 => [
+    [
         'heading' => 'Игра престолов',
         'type' => 'post-text',
         'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
         'name' => 'Владик',
         'avatar' => 'userpic.jpg'
     ],
-    2 => [
+    [
         'heading' => 'Наконец, обработал фотки!',
         'type' => 'post-photo',
         'content' => 'rock-medium.jpg',
         'name' => 'Виктор',
         'avatar' => 'userpic-mark.jpg'
     ],
-    3 => [
+    [
         'heading' => 'Моя мечта',
         'type' => 'post-photo',
         'content' => 'coast-medium.jpg',
         'name' => 'Лариса',
         'avatar' => 'userpic-larisa-small.jpg'
     ],
-    4 => [
+    [
         'heading' => 'Лучшие курсы',
         'type' => 'post-link',
         'content' => 'www.htmlacademy.ru',
@@ -344,7 +344,8 @@ $user_name = 'Сергей'; // укажите здесь ваше имя
                         <?php elseif ($post['type'] == 'post-link'): ?>
                             <!--содержимое для поста-ссылки-->
                             <div class="post-link__wrapper">
-                                <a class="post-link__external" href="http://<?= $post['content'] ?>" title="Перейти по ссылке">
+                                <a class="post-link__external" href="http://<?= $post['content'] ?>"
+                                   title="Перейти по ссылке">
                                     <div class="post-link__info-wrapper">
                                         <div class="post-link__icon-wrapper">
                                             <img src="https://www.google.com/s2/favicons?domain=vitadental.ru"
