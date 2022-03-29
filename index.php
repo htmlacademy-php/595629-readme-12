@@ -2,35 +2,35 @@
 require_once 'helpers.php';
 $is_auth = rand(0, 1);
 $posts = [
-    0 => [
+    [
         'heading' => 'Цитата',
         'type' => 'post-quote',
         'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
         'name' => 'Лариса',
         'avatar' => 'userpic-larisa-small.jpg'
     ],
-    1 => [
+    [
         'heading' => 'Игра престолов',
         'type' => 'post-text',
         'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
         'name' => 'Владик',
         'avatar' => 'userpic.jpg'
     ],
-    2 => [
+    [
         'heading' => 'Наконец, обработал фотки!',
         'type' => 'post-photo',
         'content' => 'rock-medium.jpg',
         'name' => 'Виктор',
         'avatar' => 'userpic-mark.jpg'
     ],
-    3 => [
+    [
         'heading' => 'Моя мечта',
         'type' => 'post-photo',
         'content' => 'coast-medium.jpg',
         'name' => 'Лариса',
         'avatar' => 'userpic-larisa-small.jpg'
     ],
-    4 => [
+    [
         'heading' => 'Лучшие курсы',
         'type' => 'post-link',
         'content' => 'www.htmlacademy.ru',
@@ -39,6 +39,32 @@ $posts = [
     ],
 ];
 $user_name = 'Сергей'; // укажите здесь ваше имя
+
+//Функция getPost - обрезание текста с учетом целостности слов
+
+function getPost($str, $num = 300)
+{
+    $read_more = '<a class="post-text__more-link" href="#">Читать далее</a>';
+
+//    проверяем если длина изначально меньше
+    if ((mb_strlen($str)) < $num) {
+        return $str;
+    }
+    $array_str = explode(' ', $str, 500);
+
+    $new_array_str = [];
+    foreach ($array_str as $item) {
+        if (mb_strlen(implode(" ", $new_array_str) . " ") + mb_strlen($item) > $num) {
+            break;
+        }
+        $new_array_str[] = $item;
+    }
+    return "<p>" . implode(" ", $new_array_str) . " ..." . "</p>" . $read_more;
+
+}
+
+?>
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -337,14 +363,15 @@ $user_name = 'Сергей'; // укажите здесь ваше имя
                         <?php if ($post['type'] == 'post-quote'): ?>
                             <blockquote>
                                 <p>
-                                    <?= $post['content'] ?>
+                                    <?= getPost($post['content'],20) ?>
                                 </p>
                                 <cite>Неизвестный Автор</cite>
                             </blockquote>
                         <?php elseif ($post['type'] == 'post-link'): ?>
                             <!--содержимое для поста-ссылки-->
                             <div class="post-link__wrapper">
-                                <a class="post-link__external" href="http://" title="Перейти по ссылке">
+                                <a class="post-link__external" href="http://<?= $post['content'] ?>"
+                                   title="Перейти по ссылке">
                                     <div class="post-link__info-wrapper">
                                         <div class="post-link__icon-wrapper">
                                             <img src="https://www.google.com/s2/favicons?domain=vitadental.ru"
@@ -354,7 +381,7 @@ $user_name = 'Сергей'; // укажите здесь ваше имя
                                             <h3><?= $post['heading'] ?></h3>
                                         </div>
                                     </div>
-                                    <span><?= $post['content'] ?></span>
+                                    <span><?= getPost($post['content']) ?></span>
                                 </a>
                             </div>
                             <!--Содержимое для поста фото-->
@@ -379,7 +406,7 @@ $user_name = 'Сергей'; // укажите здесь ваше имя
                             </div>
                         <?php else: ?>
                             <!--содержимое для поста-текста-->
-                            <p><?= $post['content'] ?></p>
+                            <p><?= getPost($post['content'],20) ?></p>
                         <?php endif; ?>
 
                     </div>
