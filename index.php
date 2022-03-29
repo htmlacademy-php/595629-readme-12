@@ -39,6 +39,32 @@ $posts = [
     ],
 ];
 $user_name = 'Сергей'; // укажите здесь ваше имя
+
+//Функция getPost - обрезание текста с учетом целостности слов
+
+function getPost($str, $num = 300)
+{
+    $read_more = '<a class="post-text__more-link" href="#">Читать далее</a>';
+
+//    проверяем если длина изначально меньше
+    if ((mb_strlen($str)) < $num) {
+        return $str;
+    }
+    $array_str = explode(' ', $str, 500);
+
+    $new_array_str = [];
+    foreach ($array_str as $item) {
+        if (mb_strlen(implode(" ", $new_array_str) . " ") + mb_strlen($item) > $num) {
+            break;
+        }
+        $new_array_str[] = $item;
+    }
+    return "<p>" . implode(" ", $new_array_str) . " ..." . "</p>" . $read_more;
+
+}
+
+?>
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -337,7 +363,7 @@ $user_name = 'Сергей'; // укажите здесь ваше имя
                         <?php if ($post['type'] == 'post-quote'): ?>
                             <blockquote>
                                 <p>
-                                    <?= $post['content'] ?>
+                                    <?= getPost($post['content'],20) ?>
                                 </p>
                                 <cite>Неизвестный Автор</cite>
                             </blockquote>
@@ -355,7 +381,7 @@ $user_name = 'Сергей'; // укажите здесь ваше имя
                                             <h3><?= $post['heading'] ?></h3>
                                         </div>
                                     </div>
-                                    <span><?= $post['content'] ?></span>
+                                    <span><?= getPost($post['content']) ?></span>
                                 </a>
                             </div>
                             <!--Содержимое для поста фото-->
@@ -380,7 +406,7 @@ $user_name = 'Сергей'; // укажите здесь ваше имя
                             </div>
                         <?php else: ?>
                             <!--содержимое для поста-текста-->
-                            <p><?= $post['content'] ?></p>
+                            <p><?= getPost($post['content'],20) ?></p>
                         <?php endif; ?>
 
                     </div>
